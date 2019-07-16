@@ -12,7 +12,7 @@ import Errors from "./views/Errors";
 import ComponentsOverview from "./views/ComponentsOverview";
 import Tables from "./views/Tables";
 import BlogPosts from "./views/BlogPosts";
-import GestioDesUtilisateurs from "./views/gestioDesUtilisateurs";
+import AppelsOffres from "./views/AppelsOffres";
 import Home from "./views/Home";
 import LoginPage from "./components/authontication/LoginPage";
 
@@ -38,7 +38,7 @@ export default [
     layout: DefaultLayout,
     component: () => {
       if (window.localStorage.getItem("authority") == "ROLE_ADMIN")
-        return <GestioDesUtilisateurs />;
+        return <AppelsOffres />;
       return <Redirect to="/home" />;
     }
   },

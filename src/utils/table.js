@@ -19,20 +19,11 @@ export default class Table extends Component {
   constructor(props) {
     super(props);
 
-    // this.toggle = this.toggle.bind(this);
     this.fillTable = this.fillTable.bind(this);
     this.getTableHeader = this.getTableHeader.bind(this);
-    // this.handlClick = this.handlClick.bind(this);
+
     this.selectAll = this.selectAll.bind(this);
-
-    // this.state = { open: false, id: "", username: "" };
   }
-
-  // toggle() {
-  //   this.setState({
-  //     open: !this.state.open
-  //   });
-  // }
 
   selectAll() {
     if (this.props.table.length != this.props.selected.length)
@@ -47,14 +38,6 @@ export default class Table extends Component {
       });
   }
 
-  // handlClick(id, username, enabled) {
-  //   this.setState({
-  //     id,
-  //     username,
-  //     enabled
-  //   });
-  //   this.toggle();
-  // }
   fillTable(table) {
     const selectedLength = this.props.selected.length;
     const tableLength = this.props.table.length;
@@ -63,18 +46,12 @@ export default class Table extends Component {
       <table className="table mb-0">
         <thead className="bg-light">
           <tr>
-            <th scope="col" className="border-0">
-              Identifiant
-            </th>
-            <th scope="col" className="border-0">
-              Prévilège
-            </th>
-            <th scope="col" className="border-0">
-              Statut de compte
-            </th>
-            <th scope="col" className="border-0">
-              Nom d'utilisateur
-            </th>
+            {headerElements.map(element => (
+              <th scope="col" className="border-0">
+                {element}
+              </th>
+            ))}
+
             <th scope="col" className="border-0">
               <Button
                 onClick={this.selectAll}
@@ -94,14 +71,7 @@ export default class Table extends Component {
               <>
                 <tr key={idx}>
                   {headerElements.map((headerElement, idx) => {
-                    let value;
-                    if (headerElement == "enabled") {
-                      value = element[headerElement] ? "Débloqué" : "Bloqué";
-                    } else value = element[headerElement].toString();
-                    try {
-                      // className="text-warning"
-                      return <td className="rt-td ">{value}</td>;
-                    } catch (error) {}
+                    return <td className="rt-td ">{element[headerElement]}</td>;
                   })}
 
                   <td>

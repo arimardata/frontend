@@ -17,20 +17,6 @@ const fillTable = table => {
         {table.map(element => {
           return (
             <tr key={element.id}>
-              {/* <Button
-                outline
-                size="sm"
-                theme="dark"
-                className="mb-2 mr-1"
-                onClick={() =>
-                  Dispatcher.dispatch({
-                    actionType: Constants.UPDATE_USER,
-                    payload: element
-                  })
-                }
-              >
-                <i class="material-icons">create</i>
-              </Button> */}
               {headerElements.map(headerElement => {
                 try {
                   return (

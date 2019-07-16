@@ -18,13 +18,15 @@ import {
   CardBody
 } from "shards-react";
 import { Store, Constants } from "../flux";
+import Board from "react-trello";
 
-class gestioDesUtilisateurs extends Component {
+class AppelsOffres extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      users: [],
+      aos: [],
+      board: [],
       selectedUsers: [],
       data: { authority: "ROLE_USER" },
       info: ""
@@ -48,61 +50,60 @@ class gestioDesUtilisateurs extends Component {
     const data = await fetchApi({
       method: "GET",
 
-      url: "/api/user/find",
+      url: "/api/projects/find",
       token: window.localStorage.getItem("token")
     });
+    let aos = {
+      lanes: [
+        {
+          id: "lane1",
+          title: "Step 1",
+          label: "",
+          cards: []
+        },
+        {
+          id: "lane2",
+          title: "Step 2",
+          label: "",
+          cards: []
+        },
+        {
+          id: "lane3",
+          title: "Step 3",
+          label: "",
+          cards: []
+        },
+        {
+          id: "lane4",
+          title: "Step 4",
+          label: "",
+          cards: []
+        }
+      ]
+    };
+    data.map((ao, id) => {
+      console.log(ao);
+      aos.lanes[0].cards.push({
+        id: "Card" + id,
+        title: ao.num_AO,
+        description: ao.chef_ouvrage,
+        label: ao.ville,
+        draggable: false
+      });
+    });
+
     this.setState({
-      users: data
+      aos: data,
+      baord: aos
     });
   }
-
-  // handleChange(e) {
-  //   const data = this.state.data;
-  //   data[e.target.name] = e.target.value;
-
-  //   this.setState({
-  //     data
-  //   });
-  // }
-
-  // async handleClick() {
-  //   let EmptyUsername =
-  //     this.state.data["username"] == "" || this.state.data["username"] == null
-  //       ? true
-  //       : false;
-  //   let EmptyPassword =
-  //     this.state.data["password"] == "" || this.state.data["password"] == null
-  //       ? true
-  //       : false;
-  //   if (EmptyUsername || EmptyPassword) {
-  //     this.setState({ info: "veuillez remplir tous les champs" });
-  //     return 0;
-  //   }
-  //   const body = {
-  //     username: this.state.data["username"],
-  //     password: this.state.data["password"],
-  //     authority: this.state.data["authority"]
-  //   };
-  //   const token = window.localStorage.getItem("token");
-  //   const newUser = await fetchApi({
-  //     url: `/api/user/create`,
-  //     body,
-  //     method: "POST",
-  //     token
-  //   });
-  //   this.setState({ info: "Utilisateur Ajoute avec Succes " });
-  //   this.setState({ users: [...this.state.users, newUser] });
-  // }
-
   render() {
-    // let info;
-    // if (this.state.info) {
-    //   info = (
-    //     <Alert theme="info" className="mb-0">
-    //       {this.state.info}
-    //     </Alert>
-    //   );
-    // }
+    let baord;
+    if (this.state.baord) {
+      baord = <Board data={this.state.baord} draggable />;
+    } else {
+      baord = "loading";
+    }
     return (
       <Container fluid className="main-content-container px-4">
         <Card style={{ height: 33 }} small className="  mt-1">
@@ -122,12 +123,13 @@ class gestioDesUtilisateurs extends Component {
         </Card>
         <Card small className="mt-1">
           <CardBody className="p-0 pb-3">
-            <Table
-              table={this.state.users}
+            {/* <Table
+              table={this.state.aos}
               selected={this.state.selectedUsers}
               actionOne={Constants.SELECT_USER}
               actionMany={Constants.SELECT_ALL_USERS}
-            />
+            /> */}
+            {baord}
           </CardBody>
         </Card>
       </Container>
@@ -135,4 +137,4 @@ class gestioDesUtilisateurs extends Component {
   }
 }
 
-export default gestioDesUtilisateurs;
+export default AppelsOffres;
