@@ -22,9 +22,9 @@ const SidebarMainNavbar = () => (
               className=" d-inline-block align-top mr-1"
               style={{ maxWidth: "25px" }}
               src={require("../../../images/logo/favicon.ico")}
-              alt="Passlflora"
+              alt="ArimarDATA"
             />
-            {<span className="d-none d-md-inline ml-1">Passlflora</span>}
+            {<span className="d-none d-md-inline ml-1">ArimarDATA</span>}
           </div>
         </NavbarBrand>
       </NavLink>

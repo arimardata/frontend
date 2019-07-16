@@ -34,7 +34,7 @@ export default [
     component: Home
   },
   {
-    path: "/gestionDesUtilisateurs",
+    path: "/gestionDesAO",
     layout: DefaultLayout,
     component: () => {
       if (window.localStorage.getItem("authority") == "ROLE_ADMIN")

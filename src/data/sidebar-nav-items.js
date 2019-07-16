@@ -4,9 +4,9 @@ let navItems = [
     htmlBefore: '<i class="material-icons">supervisor_account</i>',
     subItems: [
       {
-        title: "gestion des Utilisateurs",
+        title: "Appels d'offres",
 
-        to: "/gestionDesUtilisateurs"
+        to: "/gestionDesAO"
       }
     ]
   }
