@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Table from "../utils/table";
 import PageTitle from "../components/common/PageTitle";
 import fetchApi from "../utils/fetchApi";
+import AoModal from "../utils/AoModal";
 import {
   ListGroup,
   ListGroupItem,
@@ -15,9 +16,13 @@ import {
   InputGroup,
   Alert,
   ButtonGroup,
-  CardBody
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalHeader
 } from "shards-react";
 import { Store, Constants } from "../flux";
+import lanesLayout from "../utils/lanesLayout";
 import Board from "react-trello";
 
 class AppelsOffres extends Component {
@@ -26,12 +31,16 @@ class AppelsOffres extends Component {
 
     this.state = {
       aos: [],
-      board: [],
       selectedUsers: [],
       data: { authority: "ROLE_USER" },
-      info: ""
+      info: "",
+      open: false,
+      clicked: {}
     };
     this.onChange = this.onChange.bind(this);
+    this.handleDragStart = this.handleDragStart.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.onCardClick = this.onCardClick.bind(this);
   }
 
   componentWillUnmount() {
@@ -45,6 +54,8 @@ class AppelsOffres extends Component {
     });
   }
 
+  handleDragStart(cardId) {}
+
   async componentWillMount() {
     Store.addChangeListener(Constants.SELECTE_USER, this.onChange);
     const data = await fetchApi({
@@ -53,36 +64,8 @@ class AppelsOffres extends Component {
       url: "/api/projects/find",
       token: window.localStorage.getItem("token")
     });
-    let aos = {
-      lanes: [
-        {
-          id: "lane1",
-          title: "Step 1",
-          label: "",
-          cards: []
-        },
-        {
-          id: "lane2",
-          title: "Step 2",
-          label: "",
-          cards: []
-        },
-        {
-          id: "lane3",
-          title: "Step 3",
-          label: "",
-          cards: []
-        },
-        {
-          id: "lane4",
-          title: "Step 4",
-          label: "",
-          cards: []
-        }
-      ]
-    };
+    let aos = lanesLayout;
     data.map((ao, id) => {
-      console.log(ao);
       aos.lanes[0].cards.push({
         id: "Card" + id,
         title: ao.num_AO,
@@ -97,41 +80,51 @@ class AppelsOffres extends Component {
       baord: aos
     });
   }
+
+  onCardClick(cardId, metadata, laneId) {
+    console.log(laneId);
+    let lane = this.state.baord.lanes.filter(elt => elt.id == laneId);
+    let card = lane[0].cards.filter(elt => elt.id == cardId);
+    console.log(card);
+    let ao = this.state.aos.filter(ao => ao.num_AO == card[0].title);
+    this.setState({
+      open: !this.state.open,
+      clicked: ao[0]
+    });
+    this.toggle();
+  }
+  toggle() {
+    this.setState({
+      open: !this.state.open
+    });
+  }
   render() {
     let baord;
     if (this.state.baord) {
-      baord = <Board data={this.state.baord} draggable />;
+      baord = (
+        <Board
+          data={this.state.baord}
+          draggable
+          style={{ backgroundColor: "#efefef" }}
+          handleDragStart={this.handleDragStart}
+          onCardClick={this.onCardClick}
+        />
+      );
     } else {
       baord = "loading";
     }
+    const { open } = this.state;
     return (
       <Container fluid className="main-content-container px-4">
-        <Card style={{ height: 33 }} small className="  mt-1">
-          {this.state.selectedUsers.length > 0 && (
-            <ButtonGroup>
-              <Button outline theme="primary">
-                <i class="material-icons">settings</i>
-              </Button>
-              <Button outline theme="danger">
-                <i class="material-icons">delete</i>
-              </Button>
-              <Button outline theme="black">
-                <i class="material-icons">done</i>
-              </Button>
-            </ButtonGroup>
-          )}
-        </Card>
         <Card small className="mt-1">
-          <CardBody className="p-0 pb-3">
-            {/* <Table
-              table={this.state.aos}
-              selected={this.state.selectedUsers}
-              actionOne={Constants.SELECT_USER}
-              actionMany={Constants.SELECT_ALL_USERS}
-            /> */}
-            {baord}
-          </CardBody>
+          <CardBody className="p-0 pb-3">{baord}</CardBody>
         </Card>
+        <Modal size="lg" open={open} toggle={this.toggle}>
+          <ModalHeader>Header</ModalHeader>
+          <ModalBody>
+            <AoModal data={this.state.clicked} />
+          </ModalBody>
+        </Modal>
       </Container>
     );
   }
