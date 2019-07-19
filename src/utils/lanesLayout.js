@@ -2,7 +2,7 @@ export default {
   lanes: [
     {
       id: "lane1",
-      title: "Step 1",
+      title: "Favoris",
       label: "",
       cards: [],
       cardStyle: { backgroundColor: "rgba(128,128,128,0.1)" },
@@ -14,7 +14,32 @@ export default {
     },
     {
       id: "lane2",
-      title: "Step 2",
+      title: "Postule",
+      label: "",
+      cards: [],
+      cardStyle: { backgroundColor: "rgba(227,202,96,0.1)" },
+      style: {
+        backgroundColor: "rgba(227,202,96,0.05)",
+        color: "#E3CA60",
+        borderTop: "solid 2px #E3CA60"
+      }
+    },
+    {
+      id: "lane3",
+      title: "Archive Des Projets Non-Accepte",
+      label: "",
+      cards: [],
+      cardStyle: { backgroundColor: "rgba(198,16,16,0.1)" },
+      style: {
+        backgroundColor: "rgba(198,16,16,0.05)",
+        color: "rgb(198,16,16)",
+        borderTop: "solid 2px rgb(198,16,16)",
+        heigth: "200px"
+      }
+    },
+    {
+      id: "lane4",
+      title: "Retenu",
       label: "",
       cards: [],
       cardStyle: { backgroundColor: "rgba(0,255,0,0.1)" },
@@ -24,29 +49,30 @@ export default {
         borderTop: "solid 2px green"
       }
     },
+
     {
-      id: "lane3",
-      title: "Step 3",
+      id: "lane5",
+      title: "Archive Des Projets Finis",
       label: "",
       cards: [],
-      cardStyle: { backgroundColor: "rgba(255,0,0,0.1)" },
+      cardStyle: { backgroundColor: "rgba(0,255,0,0.1)" },
       style: {
-        backgroundColor: "rgba(255,0,0,0.05)",
-        color: "red",
-        borderTop: "solid 2px red",
-        heigth: "200px"
+        backgroundColor: "rgba(0,255,0,0.05)",
+        color: "green",
+        borderTop: "solid 2px green"
       }
     },
+
     {
-      id: "lane4",
-      title: "Step 4",
+      id: "lane6",
+      title: "A Modifier",
       label: "",
       cards: [],
-      cardStyle: { backgroundColor: "rgba(145,47,86,0.1)" },
+      cardStyle: { backgroundColor: "rgba(227,202,96,0.1)" },
       style: {
-        backgroundColor: "rgba(145,47,86,0.05)",
-        color: "#912F56",
-        borderTop: "solid 2px #912F56"
+        backgroundColor: "rgba(227,202,96,0.05)",
+        color: "rgb(227,202,96)",
+        borderTop: "solid 2px rgb(227,202,96)"
       }
     }
   ]

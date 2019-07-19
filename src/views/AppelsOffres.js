@@ -19,7 +19,8 @@ import {
   CardBody,
   Modal,
   ModalBody,
-  ModalHeader
+  ModalHeader,
+  Progress
 } from "shards-react";
 import { Store, Constants } from "../flux";
 import lanesLayout from "../utils/lanesLayout";
@@ -38,7 +39,7 @@ class AppelsOffres extends Component {
       clicked: {}
     };
     this.onChange = this.onChange.bind(this);
-    this.handleDragStart = this.handleDragStart.bind(this);
+    this.handleDragEnd = this.handleDragEnd.bind(this);
     this.toggle = this.toggle.bind(this);
     this.onCardClick = this.onCardClick.bind(this);
   }
@@ -54,8 +55,6 @@ class AppelsOffres extends Component {
     });
   }
 
-  handleDragStart(cardId) {}
-
   async componentWillMount() {
     Store.addChangeListener(Constants.SELECTE_USER, this.onChange);
     const data = await fetchApi({
@@ -65,9 +64,14 @@ class AppelsOffres extends Component {
       token: window.localStorage.getItem("token")
     });
     let aos = lanesLayout;
+
     data.map((ao, id) => {
-      aos.lanes[0].cards.push({
-        id: "Card" + id,
+      let index;
+      for (let i = 0; i < aos.lanes.length; i++) {
+        if (aos.lanes[i].title === ao.etat) index = i;
+      }
+      aos.lanes[index].cards.push({
+        id: ao.id,
         title: ao.num_AO,
         description: ao.chef_ouvrage,
         label: ao.ville,
@@ -82,10 +86,8 @@ class AppelsOffres extends Component {
   }
 
   onCardClick(cardId, metadata, laneId) {
-    console.log(laneId);
     let lane = this.state.baord.lanes.filter(elt => elt.id == laneId);
     let card = lane[0].cards.filter(elt => elt.id == cardId);
-    console.log(card);
     let ao = this.state.aos.filter(ao => ao.num_AO == card[0].title);
     this.setState({
       open: !this.state.open,
@@ -98,15 +100,32 @@ class AppelsOffres extends Component {
       open: !this.state.open
     });
   }
+  async handleDragEnd(
+    cardId,
+    sourceLaneId,
+    targetLaneId,
+    position,
+    cardDetails
+  ) {
+    let lane = this.state.baord.lanes.filter(elt => elt.id == targetLaneId);
+    const data = await fetchApi({
+      method: "GET",
+
+      url: "/api/projects/changeetat/" + cardDetails.id + "/" + lane[0].title,
+      token: window.localStorage.getItem("token")
+    });
+  }
+
   render() {
     let baord;
     if (this.state.baord) {
       baord = (
         <Board
+          laneDraggable={false}
           data={this.state.baord}
           draggable
           style={{ backgroundColor: "#efefef" }}
-          handleDragStart={this.handleDragStart}
+          handleDragEnd={this.handleDragEnd}
           onCardClick={this.onCardClick}
         />
       );
@@ -116,12 +135,16 @@ class AppelsOffres extends Component {
     const { open } = this.state;
     return (
       <Container fluid className="main-content-container px-4">
-        <Card small className="mt-1">
+        <Card className="mt-1">
           <CardBody className="p-0 pb-3">{baord}</CardBody>
         </Card>
         <Modal size="lg" open={open} toggle={this.toggle}>
-          <ModalHeader>Header</ModalHeader>
           <ModalBody>
+            <Progress multi>
+              <Progress bar value="50" />
+              <Progress bar theme="success" value="20" />
+            </Progress>
+            <hr />
             <AoModal data={this.state.clicked} />
           </ModalBody>
         </Modal>
