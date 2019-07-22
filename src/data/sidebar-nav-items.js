@@ -7,6 +7,10 @@ let navItems = [
         title: "Appels d'offres",
 
         to: "/gestionDesAO"
+      },
+      {
+        title: "Gestion de cheques",
+        to: "/GestionDeCheques"
       }
     ]
   }

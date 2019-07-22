@@ -15,6 +15,7 @@ import BlogPosts from "./views/BlogPosts";
 import AppelsOffres from "./views/AppelsOffres";
 import Home from "./views/Home";
 import LoginPage from "./components/authontication/LoginPage";
+import GestionDeCheques from "./views/Cheques"
 
 export default [
   {
@@ -41,6 +42,12 @@ export default [
         return <AppelsOffres />;
       return <Redirect to="/home" />;
     }
+  },
+  {
+    path:"/GestionDeCheques",
+    component:GestionDeCheques
+
+
   },
   {
     path: "/user-profile-lite",
