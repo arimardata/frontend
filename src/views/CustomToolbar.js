@@ -5,23 +5,8 @@ import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
 import ChequeModal from "../utils/ChequeModal";
 import {
-  ListGroup,
-  ListGroupItem,
-  Row,
-  Col,
-  FormInput,
-  Button,
-  Container,
-  Card,
-  CardHeader,
-  InputGroup,
-  Alert,
-  ButtonGroup,
-  CardBody,
   Modal,
   ModalBody,
-  ModalHeader,
-  Progress
 } from "shards-react";
 
 const defaultToolbarStyles = {
